@@ -33,8 +33,12 @@ public class NumberController {
     @GetMapping("/getNumbers")
     public ResponseEntity<List<Long>> getNumbers() {
         String selectQuery = "SELECT number FROM numbers ORDER BY id";
-        
+    
         List<Long> numbersList = jdbcTemplate.query(selectQuery, (resultSet, rowNum) -> resultSet.getLong("number"));
+        
+        if (numbersList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         
         return ResponseEntity.ok(numbersList);
     }
